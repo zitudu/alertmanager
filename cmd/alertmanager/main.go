@@ -145,7 +145,15 @@ func buildReceiverIntegrations(nc *config.Receiver, tmpl *template.Template, log
 		add("webhook", i, c, func(l log.Logger) (notify.Notifier, error) { return webhook.New(c, tmpl, l) })
 	}
 	for i, c := range nc.EmailConfigs {
-		add("email", i, c, func(l log.Logger) (notify.Notifier, error) { return email.New(c, tmpl, l), nil })
+		add("email", i, c, func(l log.Logger) (notify.Notifier, error) {
+			if c.Plugin != nil {
+				_, err := c.Plugin(c, c.PluginParams)
+				if err != nil {
+					return nil, err
+				}
+			}
+			return email.New(c, tmpl, l), nil
+		})
 	}
 	for i, c := range nc.PagerdutyConfigs {
 		add("pagerduty", i, c, func(l log.Logger) (notify.Notifier, error) { return pagerduty.New(c, tmpl, l) })

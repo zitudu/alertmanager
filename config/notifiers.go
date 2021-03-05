@@ -142,6 +142,9 @@ func (nc *NotifierConfig) SendResolved() bool {
 type EmailConfig struct {
 	NotifierConfig `yaml:",inline" json:",inline"`
 
+	PluginPath   string            `yaml:"plugin,omitempty" json:"plugin,omitempty"`
+	Plugin       Plugin            `yaml:"-" json:"-"`
+	PluginParams map[string]string `yaml:"plugin_params" json:"plugin_params"`
 	// Email address to notify.
 	To           string              `yaml:"to,omitempty" json:"to,omitempty"`
 	From         string              `yaml:"from,omitempty" json:"from,omitempty"`

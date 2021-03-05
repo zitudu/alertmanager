@@ -6,6 +6,7 @@
 /.build
 /.release
 /.tarballs
+/*.so
 
 !.golangci.yml
 !/cli/testdata/*.yml
